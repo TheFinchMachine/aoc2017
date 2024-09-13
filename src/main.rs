@@ -14,8 +14,8 @@ fn main() {
     in_day1 = sanitize_numeric(&in_day1);
 
     //remove non-matching numbers from string (remember the string loops!)
-    let day1_puzzle1 = sanitize_same_next_only(&in_day1);
-    let day1_puzzle2 = sanitize_same_jump_only(&in_day1);
+    let day1_puzzle1 = sanitize_same_next_only(&in_day1).unwrap();
+    let day1_puzzle2 = sanitize_same_jump_only(&in_day1).unwrap();
 
     //sum remaining string
     let sum_puzzle1 = sum_chars_in_string(&day1_puzzle1);
