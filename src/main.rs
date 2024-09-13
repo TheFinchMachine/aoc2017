@@ -1,0 +1,32 @@
+use std::fs::File;
+use std::io::prelude::*;
+use std::io;
+use std::path::Path;
+
+fn string_from_file(path: &Path) -> io::Result<String> {
+    let mut file = File::open(path)?;
+
+    //read into string?
+    let mut s = String::new();
+    file.read_to_string(&mut s)?;
+
+    Ok(s)
+}
+
+
+fn main() {
+    //open file
+    let path = Path::new("res/puzzle1.txt");
+    let display = path.display();
+
+    let mut in_day1 = string_from_file(path).unwrap_or_else(|why| {
+        panic!("couldn't open {}: {}", display, why)
+    });
+    
+    //sanitize string to numeric characters
+    //remove non-matching numbers from string (remember the string loops!)
+    //sum remaining string
+
+    println!("in_day1: {:?}", in_day1);
+
+}
