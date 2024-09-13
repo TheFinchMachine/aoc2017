@@ -12,6 +12,7 @@ fn string_from_file(path: &Path) -> io::Result<String> {
 
     Ok(s)
 }
+
 fn sanitize_numeric(s: &str) -> String{
     let mut new_s = String::new();
     for c in s.chars() {
@@ -22,6 +23,26 @@ fn sanitize_numeric(s: &str) -> String{
     new_s
 }
 
+fn sanitize_same_next_only(s: &str) -> String {
+    let mut new_s = String::new();
+    if s.len() <= 1 {
+        return new_s;
+    }
+
+    let chars: Vec<char> = s.chars().collect();
+    for w in chars.windows(2) {
+        if w[0] == w[1] {
+            new_s.push(w[0]);
+        }
+    }
+
+    let last_char = chars.last().unwrap();
+    if last_char == chars.first().unwrap() {
+        new_s.push(*last_char);
+    }
+
+    new_s
+}
 
 fn main() {
     //open file
@@ -34,10 +55,11 @@ fn main() {
 
     //sanitize string to numeric characters
     in_day1 = sanitize_numeric(&in_day1);
-    
+
+    in_day1 = sanitize_same_next_only(&in_day1);
+
     //remove non-matching numbers from string (remember the string loops!)
     //sum remaining string
 
     println!("in_day1: {:?}", in_day1);
-
 }
