@@ -14,11 +14,14 @@ fn main() {
     in_day1 = sanitize_numeric(&in_day1);
 
     //remove non-matching numbers from string (remember the string loops!)
-    in_day1 = sanitize_same_next_only(&in_day1);
+    let day1_puzzle1 = sanitize_same_next_only(&in_day1);
+    let day1_puzzle2 = sanitize_same_jump_only(&in_day1);
 
     //sum remaining string
-    let sum = sum_chars_in_string(&in_day1);
+    let sum_puzzle1 = sum_chars_in_string(&day1_puzzle1);
+    let sum_puzzle2 = sum_chars_in_string(&day1_puzzle2);
 
     println!("in_day1: {:?}", in_day1);
-    println!("sum of in_day1: {}", sum);
+    println!("sum of puzzle1: {}", sum_puzzle1);
+    println!("sum of puzzle2: {}", sum_puzzle2);
 }
