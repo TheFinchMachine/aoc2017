@@ -23,22 +23,47 @@ pub fn sanitize_numeric(s: &str) -> String{
     new_s
 }
 
+pub fn sanitize_same_jump_only(s: &str) -> String {
+    let mut new_s = String::new();
+    if s.len() <= 2 {
+        return new_s;
+    }
+
+    let mut s_win = String::new();
+    s_win += s;
+    s_win += &s[0..s.len()/2];
+
+    new_s = match_chars_from_window(&s_win, s.len()/2);
+
+    new_s
+}
+
 pub fn sanitize_same_next_only(s: &str) -> String {
     let mut new_s = String::new();
-    if s.len() <= 1 {
+    if s.len() <= 2 {
+        return new_s;
+    }
+
+    let mut s_win = String::new();
+    s_win += s;
+    s_win += &s[0..1];
+
+    new_s = match_chars_from_window(&s_win, 2);
+
+    new_s
+}
+
+fn match_chars_from_window(s: &str, window_size: usize) -> String {
+    let mut new_s = String::new();
+    if s.len() <= 2 {
         return new_s;
     }
 
     let chars: Vec<char> = s.chars().collect();
-    for w in chars.windows(2) {
-        if w[0] == w[1] {
-            new_s.push(w[0]);
+    for w in chars.windows(window_size) {
+        if w.first().unwrap() == w.last().unwrap() {
+            new_s.push(*w.first().unwrap());
         }
-    }
-
-    let last_char = chars.last().unwrap();
-    if last_char == chars.first().unwrap() {
-        new_s.push(*last_char);
     }
 
     new_s
