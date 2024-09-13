@@ -44,6 +44,14 @@ pub fn sanitize_same_next_only(s: &str) -> String {
     new_s
 }
 
+pub fn sum_chars_in_string(s: &str) -> u32 {
+    let mut sum = 0;
+    for c in s.chars() {
+        sum += c.to_digit(10).unwrap_or(0);
+    }
+    sum
+}
+
 #[cfg(test)]
 mod tests {
     use crate::sanitize_same_next_only;
