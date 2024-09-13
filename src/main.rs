@@ -12,6 +12,15 @@ fn string_from_file(path: &Path) -> io::Result<String> {
 
     Ok(s)
 }
+fn sanitize_numeric(s: &str) -> String{
+    let mut new_s = String::new();
+    for c in s.chars() {
+        if c.is_ascii_digit(){
+            new_s.push(c);
+        }
+    }
+    new_s
+}
 
 
 fn main() {
@@ -22,8 +31,10 @@ fn main() {
     let mut in_day1 = string_from_file(path).unwrap_or_else(|why| {
         panic!("couldn't open {}: {}", display, why)
     });
-    
+
     //sanitize string to numeric characters
+    in_day1 = sanitize_numeric(&in_day1);
+    
     //remove non-matching numbers from string (remember the string loops!)
     //sum remaining string
 
