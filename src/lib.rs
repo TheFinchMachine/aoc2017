@@ -33,7 +33,8 @@ pub fn sanitize_same_jump_only(s: &str) -> String {
     s_win += s;
     s_win += &s[0..s.len()/2];
 
-    new_s = match_chars_from_window(&s_win, s.len()/2);
+    //window size is larger because we need to included the element, not just the skiped elements.
+    new_s = match_chars_from_window(&s_win, s.len()/2+1);
 
     new_s
 }
@@ -79,7 +80,7 @@ pub fn sum_chars_in_string(s: &str) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::sanitize_same_next_only;
+    use crate::*;
 
     #[test]
     fn sanitize_same_next_only_unit() {
@@ -89,6 +90,18 @@ mod tests {
 
         for (i, s) in inputs.iter().enumerate() {
             let a = sanitize_same_next_only(*s);
+            assert_eq!(answers[i], &a, "Failed to process string {}. Expected result was {} but actuall result was {}", *s, answers[i], &a);
+        }
+    }
+
+    #[test]
+    fn sanitize_same_jump_only_unit() {
+        let inputs = vec!["1212", "1221", "123425", "123123", "12131415"];
+        let answers = vec!["1212", "", "22", "123123", "1111"];
+        assert_eq!(inputs.len(), answers.len(), "Number of inputs for test, {}, is not equal to the number of answers, {}", inputs.len(), answers.len());
+
+        for (i, s) in inputs.iter().enumerate() {
+            let a = sanitize_same_jump_only(*s);
             assert_eq!(answers[i], &a, "Failed to process string {}. Expected result was {} but actuall result was {}", *s, answers[i], &a);
         }
     }
