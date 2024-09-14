@@ -1,27 +1,66 @@
-use std::path::Path;
 use aoc2017::*;
+use std::path::Path;
+
+fn spreadsheet_to_numbers(sheet: &str) -> Vec::<Vec<i32>> {
+    let rows: Vec<&str> = sheet.split("\n").collect();
+    let mut row_numbers = Vec::<Vec<i32>>::new();
+    for row in rows {
+        let words: Vec<&str> = row.split_whitespace().collect();
+        let mut numbers = Vec::<i32>::new();
+        for word in words {
+            let number = word.parse().unwrap();
+            numbers.push(number);
+        }
+        row_numbers.push(numbers);
+    }
+    row_numbers
+}
+
+fn sum_min_max(table: Vec::<Vec<i32>>) -> i32 {
+    let mut sum = 0;
+    for mut row in table {
+        if !row.is_empty() {
+            row.sort();
+            sum += row.last().unwrap() - row.first().unwrap();
+            println!("{:?}", row);
+        }
+    }
+    sum
+}
+
+fn sum_divisable(table: Vec::<Vec<i32>>) -> i32 {
+    let mut sum = 0;
+    for row in table {
+        sum += row_find_divisible(row);
+    }
+    sum
+}
+
+fn row_find_divisible(row: Vec<i32>) -> i32 {
+    let row_compare = &row.clone();
+    for i in &row {
+        for j in row_compare {
+            if j != i && j % i == 0 {
+                println!("{}, {}", j, i);
+                return j/i
+            }
+        }
+    }
+    0 
+}
 
 fn main() {
-    //open file
-    let path = Path::new("res/puzzle1.txt");
+
+    let path = Path::new("res/puzzle2.txt");
     let display = path.display();
 
-    let mut in_day1 = string_from_file(path).unwrap_or_else(|why| {
-        panic!("couldn't open {}: {}", display, why)
-    });
+    let s = string_from_file(path)
+        .unwrap_or_else(|why| panic!("couldn't open {}: {}", display, why));
 
-    //sanitize string to numeric characters
-    in_day1 = sanitize_numeric(&in_day1);
+    let row_numbers = spreadsheet_to_numbers(&s);
 
-    //remove non-matching numbers from string (remember the string loops!)
-    let day1_puzzle1 = sanitize_same_next_only(&in_day1).unwrap();
-    let day1_puzzle2 = sanitize_same_jump_only(&in_day1).unwrap();
+    //let sum = sum_min_max(row_numbers);
+    let sum = sum_divisable(row_numbers);
 
-    //sum remaining string
-    let sum_puzzle1 = sum_chars_in_string(&day1_puzzle1);
-    let sum_puzzle2 = sum_chars_in_string(&day1_puzzle2);
-
-    println!("in_day1: {:?}", in_day1);
-    println!("sum of puzzle1: {}", sum_puzzle1);
-    println!("sum of puzzle2: {}", sum_puzzle2);
+    println!("{}", sum);
 }
